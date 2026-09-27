@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Modals
     modalResult: document.getElementById('modal-result'),
+    resultCard: document.querySelector('#modal-result .modal-card'),
     resultHeader: document.getElementById('result-header'),
     resultTitle: document.getElementById('result-title'),
     resultScore: document.getElementById('result-score'),
@@ -152,9 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(400, now);
-        osc.frequency.exponentialRampToValueAtTime(150, now + 0.04);
-        gain.gain.setValueAtTime(0.15, now);
+        osc.frequency.setValueAtTime(420, now);
+        osc.frequency.exponentialRampToValueAtTime(160, now + 0.04);
+        gain.gain.setValueAtTime(0.12, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
@@ -166,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(523.25, now); // C5
         osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.08); // E5
-        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.setValueAtTime(0.18, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
@@ -178,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, now); // A4
         osc.frequency.exponentialRampToValueAtTime(349.23, now + 0.08); // F4
-        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.setValueAtTime(0.18, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
@@ -188,63 +189,134 @@ document.addEventListener('DOMContentLoaded', () => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(350, now);
-        osc.frequency.exponentialRampToValueAtTime(500, now + 0.06);
-        gain.gain.setValueAtTime(0.15, now);
+        osc.frequency.setValueAtTime(360, now);
+        osc.frequency.exponentialRampToValueAtTime(480, now + 0.06);
+        gain.gain.setValueAtTime(0.12, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(now);
         osc.stop(now + 0.06);
       } else if (type === 'win') {
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        // Happy Victory Melody (C5, E5, G5, C6)
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           const startTime = now + idx * 0.08;
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(freq, startTime);
-          gain.gain.setValueAtTime(0.25, startTime);
+          gain.gain.setValueAtTime(0.22, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + 0.22);
+        });
+      } else if (type === 'lose') {
+        // Soft Dull/Sad Descending Progression (G4, F4, E4, C4)
+        const notes = [392.00, 349.23, 329.63, 261.63];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const startTime = now + idx * 0.09;
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, startTime);
+          gain.gain.setValueAtTime(0.14, startTime);
           gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
           osc.connect(gain);
           gain.connect(audioCtx.destination);
           osc.start(startTime);
           osc.stop(startTime + 0.2);
         });
-      } else if (type === 'lose') {
-        const notes = [440, 392, 349.23, 293.66]; // A4, G4, F4, D4
-        notes.forEach((freq, idx) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          const startTime = now + idx * 0.1;
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(freq, startTime);
-          gain.gain.setValueAtTime(0.15, startTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(startTime);
-          osc.stop(startTime + 0.25);
-        });
       } else if (type === 'draw') {
-        const notes = [440, 440];
+        // Calm Neutral Double Tone (G4, G4)
+        const notes = [392.00, 392.00];
         notes.forEach((freq, idx) => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           const startTime = now + idx * 0.12;
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, startTime);
-          gain.gain.setValueAtTime(0.2, startTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
+          gain.gain.setValueAtTime(0.12, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.005, startTime + 0.12);
           osc.connect(gain);
           gain.connect(audioCtx.destination);
           osc.start(startTime);
-          osc.stop(startTime + 0.1);
+          osc.stop(startTime + 0.12);
         });
       }
     } catch (e) {
       console.warn('Audio playback error:', e);
     }
+  }
+
+  // ==========================================================================
+  // CONFETTI CELEBRATION SYSTEM
+  // ==========================================================================
+
+  let confettiAnimationId = null;
+
+  function triggerConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#00d2ff', '#a855f7', '#00f0ff', '#c084fc', '#ffffff', '#38bdf8'];
+    const particles = [];
+    const particleCount = 50;
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 220,
+        y: canvas.height / 2 - 40 + (Math.random() - 0.5) * 80,
+        vx: (Math.random() - 0.5) * 7,
+        vy: Math.random() * -5 - 2,
+        size: Math.random() * 7 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 10,
+        opacity: 1
+      });
+    }
+
+    const startTime = Date.now();
+    const duration = 1600; // 1.6 seconds
+
+    function render() {
+      const elapsed = Date.now() - startTime;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.22; // gravity
+        p.rotation += p.rotationSpeed;
+        if (elapsed > 900) {
+          p.opacity = Math.max(0, 1 - (elapsed - 900) / 700);
+        }
+
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+        ctx.restore();
+      });
+
+      if (elapsed < duration) {
+        confettiAnimationId = requestAnimationFrame(render);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        cancelAnimationFrame(confettiAnimationId);
+      }
+    }
+
+    if (confettiAnimationId) cancelAnimationFrame(confettiAnimationId);
+    render();
   }
 
   // ==========================================================================
@@ -261,6 +333,105 @@ document.addEventListener('DOMContentLoaded', () => {
         DOM.screens[name].classList.remove('active');
       }
     });
+  }
+
+  // ==========================================================================
+  // WIN / DRAW DETECTION & GAME OVER
+  // ==========================================================================
+
+  function checkWinner(boardState) {
+    for (const combo of WINNING_COMBINATIONS) {
+      const [a, b, c] = combo;
+      if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
+        return { winnerSymbol: boardState[a], winningCombo: combo, isDraw: false };
+      }
+    }
+
+    const isFull = boardState.every((cell) => cell !== null);
+    if (isFull) {
+      return { winnerSymbol: null, winningCombo: null, isDraw: true };
+    }
+
+    return null;
+  }
+
+  function handleGameOver(result) {
+    state.isGameOver = true;
+    DOM.thinkingSpinner.classList.add('hidden');
+
+    if (result.isDraw) {
+      state.scores.draws++;
+      updateScoreboardUI();
+      playSound('draw');
+      showResultModal({
+        type: 'draw',
+        header: "IT'S A DRAW",
+        title: 'No winner this round.',
+        scoreText: `Score: ${state.scores.p1} : ${state.scores.p2}`
+      });
+    } else {
+      // Highlight winning cells
+      result.winningCombo.forEach((idx) => {
+        DOM.cells[idx].classList.add('winning');
+      });
+
+      const isP1Winner = result.winnerSymbol === state.player1.symbol;
+      let winnerName = isP1Winner ? state.player1.name : state.player2.name;
+
+      if (isP1Winner) {
+        state.scores.p1++;
+      } else {
+        state.scores.p2++;
+      }
+
+      updateScoreboardUI();
+
+      if (state.gameMode === 'pvp') {
+        playSound('win');
+        triggerConfetti();
+        showResultModal({
+          type: 'win',
+          header: 'ROUND WON',
+          title: `${winnerName} wins!`,
+          scoreText: `Score: ${state.scores.p1} : ${state.scores.p2}`
+        });
+      } else {
+        // PVC Mode
+        if (isP1Winner) {
+          playSound('win');
+          triggerConfetti();
+          showResultModal({
+            type: 'win',
+            header: 'YOU WON',
+            title: `${winnerName} wins!`,
+            scoreText: `Score: ${state.scores.p1} : ${state.scores.p2}`
+          });
+        } else {
+          playSound('lose');
+          showResultModal({
+            type: 'loss',
+            header: 'GAME OVER',
+            title: 'COMPUTER WINS',
+            scoreText: `Score: ${state.scores.p1} : ${state.scores.p2}`
+          });
+        }
+      }
+    }
+  }
+
+  function showResultModal({ type, header, title, scoreText }) {
+    DOM.resultHeader.textContent = header;
+    DOM.resultTitle.textContent = title;
+    DOM.resultScore.textContent = scoreText;
+
+    if (DOM.resultCard) {
+      DOM.resultCard.classList.remove('result-win', 'result-loss', 'result-draw');
+      DOM.resultCard.classList.add(`result-${type}`);
+    }
+
+    setTimeout(() => {
+      DOM.modalResult.classList.remove('hidden');
+    }, 550);
   }
 
   // ==========================================================================
