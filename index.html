@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Main Header (Always visible across screens) -->
+    <header class="main-header">
+      <div class="logo">
+        <span class="logo-icon">✕◯</span>
+        <span class="logo-text">Tic-Tac-Toe</span>
+      </div>
+      <div class="header-controls">
+        <button id="sound-toggle" class="icon-btn" aria-label="Toggle Sound" title="Toggle Sound">
+          <span class="sound-icon sound-on-icon">🔊</span>
+          <span class="sound-icon sound-off-icon hidden">🔇</span>
+          <span class="btn-text">Sound</span>
+        </button>
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme" title="Toggle Theme">
+          <span class="theme-icon moon-icon">🌙</span>
+          <span class="theme-icon sun-icon hidden">☀️</span>
+          <span class="btn-text">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="content-area">
+      <!-- 1. GAME MODE SELECTION SCREEN (Home) -->
+      <section id="screen-mode-select" class="screen active">
+        <div class="card home-card">
+          <h1 class="main-title">TIC-TAC-TOE</h1>
+          <p class="subtitle">Choose how you want to play</p>
+
+          <div class="mode-buttons">
+            <button id="btn-mode-pvp" class="btn btn-primary btn-large">
+              <span class="btn-title">TWO PLAYERS</span>
+              <span class="btn-subtitle">X vs O</span>
+            </button>
+            <button id="btn-mode-pvc" class="btn btn-secondary btn-large">
+              <span class="btn-title">PLAY VS COMPUTER</span>
+              <span class="btn-subtitle">X vs Bot</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. DIFFICULTY SELECTION SCREEN (Computer Mode) -->
+      <section id="screen-difficulty-select" class="screen hidden">
+        <div class="card">
+          <h2 class="section-title">PLAY VS COMPUTER</h2>
+          <p class="subtitle">Choose your difficulty</p>
+
+          <div class="difficulty-buttons">
+            <button id="btn-diff-easy" class="btn btn-option">
+              <span class="btn-title">EASY</span>
+              <span class="btn-subtitle">Casual Computer</span>
+            </button>
+            <button id="btn-diff-hard" class="btn btn-option">
+              <span class="btn-title">HARD</span>
+              <span class="btn-subtitle">Unbeatable Computer</span>
+            </button>
+          </div>
+
+          <div class="screen-footer">
+            <button id="btn-diff-back" class="btn btn-back">← Back</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. TWO PLAYERS SETUP SCREEN -->
+      <section id="screen-pvp-setup" class="screen hidden">
+        <div class="card">
+          <h2 class="section-title">PLAYER SETUP</h2>
+          <p class="subtitle">Enter player details</p>
+
+          <form id="pvp-setup-form" onsubmit="return false;">
+            <div class="input-group">
+              <label for="pvp-p1-name">PLAYER 1</label>
+              <input type="text" id="pvp-p1-name" value="Player 1" maxlength="15" autocomplete="off" required>
+            </div>
+
+            <div class="input-group">
+              <label for="pvp-p2-name">PLAYER 2</label>
+              <input type="text" id="pvp-p2-name" value="Player 2" maxlength="15" autocomplete="off" required>
+            </div>
+
+            <div class="symbol-selection-group">
+              <label>Player 1 Symbol</label>
+              <div class="symbol-picker" id="pvp-symbol-picker">
+                <button type="button" class="symbol-btn active" data-symbol="X">X</button>
+                <button type="button" class="symbol-btn" data-symbol="O">O</button>
+              </div>
+              <p class="symbol-note" id="pvp-symbol-note">Player 2 will play as O</p>
+            </div>
+
+            <div class="button-row">
+              <button type="button" id="btn-pvp-back" class="btn btn-back">Back</button>
+              <button type="submit" id="btn-pvp-start" class="btn btn-primary">START GAME</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 4. COMPUTER PLAYER SETUP SCREEN -->
+      <section id="screen-pvc-setup" class="screen hidden">
+        <div class="card">
+          <h2 class="section-title">PLAYER SETUP</h2>
+          <p class="subtitle">Playing Against: <strong>COMPUTER</strong></p>
+
+          <form id="pvc-setup-form" onsubmit="return false;">
+            <div class="input-group">
+              <label for="pvc-p1-name">Your Name</label>
+              <input type="text" id="pvc-p1-name" value="Player" maxlength="15" autocomplete="off" required>
+            </div>
+
+            <div class="symbol-selection-group">
+              <label>Choose Your Symbol</label>
+              <div class="symbol-picker" id="pvc-symbol-picker">
+                <button type="button" class="symbol-btn active" data-symbol="X">X</button>
+                <button type="button" class="symbol-btn" data-symbol="O">O</button>
+              </div>
+              <p class="symbol-note" id="pvc-symbol-note">Computer will play as O</p>
+            </div>
+
+            <div class="badge-container">
+              <span class="badge" id="pvc-diff-badge">Difficulty: EASY</span>
+            </div>
+
+            <div class="button-row">
+              <button type="button" id="btn-pvc-back" class="btn btn-back">Back</button>
+              <button type="submit" id="btn-pvc-start" class="btn btn-primary">START GAME</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 5. MAIN GAME SCREEN -->
+      <section id="screen-game" class="screen hidden">
+        <div class="game-container">
+          <!-- Game Controls Header -->
+          <div class="game-actions">
+            <button id="btn-change-mode" class="btn btn-small btn-secondary">Change Mode</button>
+            <button id="btn-new-game" class="btn btn-small btn-primary">New Game</button>
+            <button id="btn-reset-scores" class="btn btn-small btn-danger">Reset Scores</button>
+          </div>
+
+          <!-- Scoreboard -->
+          <div class="scoreboard">
+            <div class="score-card player-card" id="score-p1-card">
+              <div class="player-name" id="score-p1-name">Player 1</div>
+              <div class="player-symbol" id="score-p1-symbol">X</div>
+              <div class="score-value" id="score-p1-val">0</div>
+            </div>
+
+            <div class="score-card draws-card">
+              <div class="player-name">Draws</div>
+              <div class="player-symbol">-</div>
+              <div class="score-value" id="score-draws-val">0</div>
+            </div>
+
+            <div class="score-card player-card" id="score-p2-card">
+              <div class="player-name" id="score-p2-name">Player 2</div>
+              <div class="player-symbol" id="score-p2-symbol">O</div>
+              <div class="score-value" id="score-p2-val">0</div>
+            </div>
+          </div>
+
+          <!-- Turn Indicator -->
+          <div class="turn-indicator" id="turn-indicator">
+            <span class="turn-text" id="turn-text">Player 1's Turn</span>
+            <div class="thinking-spinner hidden" id="thinking-spinner">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <!-- Tic-Tac-Toe Board -->
+          <div class="board-wrapper">
+            <div class="board" id="board" role="grid" aria-label="Tic Tac Toe Game Board">
+              <button class="cell" data-index="0" aria-label="Cell 1"></button>
+              <button class="cell" data-index="1" aria-label="Cell 2"></button>
+              <button class="cell" data-index="2" aria-label="Cell 3"></button>
+              <button class="cell" data-index="3" aria-label="Cell 4"></button>
+              <button class="cell" data-index="4" aria-label="Cell 5"></button>
+              <button class="cell" data-index="5" aria-label="Cell 6"></button>
+              <button class="cell" data-index="6" aria-label="Cell 7"></button>
+              <button class="cell" data-index="7" aria-label="Cell 8"></button>
+              <button class="cell" data-index="8" aria-label="Cell 9"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+
+    <!-- Result Modal (Win / Draw) -->
+    <div id="modal-result" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <div class="modal-card result-card">
+        <div class="result-header" id="result-header">ROUND WON</div>
+        <h2 class="result-title" id="result-title">Aishwarya wins!</h2>
+        <p class="result-score" id="result-score">Score: 1 : 0</p>
+        
+        <div class="modal-buttons">
+          <button id="btn-result-again" class="btn btn-primary">Play Again</button>
+          <button id="btn-result-mode" class="btn btn-secondary">Change Mode</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Reset Modal -->
+    <div id="modal-confirm-reset" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div class="modal-card">
+        <h3 id="confirm-title">Reset Scores?</h3>
+        <p class="modal-text">All current scores will be cleared.</p>
+
+        <div class="modal-buttons">
+          <button id="btn-confirm-cancel" class="btn btn-secondary">Cancel</button>
+          <button id="btn-confirm-reset" class="btn btn-danger">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
